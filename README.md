@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/d-coders-banner.jpg" alt="D-Coders Squad Banner" width="100%">
+  <img src="d-coders-banner.png" alt="D-Coders Squad Banner" width="100%">
 </p>
 
 <div align="center">
