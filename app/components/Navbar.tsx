@@ -104,7 +104,7 @@ const Navbar = () => {
     <>
       <nav
         ref={containerRef}
-        className="navb pt-6 md:pt-10 w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50 transition-all duration-500 ease-in-out"
+        className="navb pt-6 md:pt-10 w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50"
       >
         <a
           onClick={(e) => {
@@ -124,7 +124,7 @@ const Navbar = () => {
           </div>
         </a>
 
-        <ul className="hidden md:flex items-center gap-6 lg:gap-8 ml-auto font-Ovo transition-all duration-500 ease-in-out">
+        <ul className="hidden md:flex items-center gap-6 lg:gap-8 ml-auto">
           <li>
             <a
               onClick={(e) => {

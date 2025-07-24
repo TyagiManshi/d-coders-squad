@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 import SplitType from "split-type"
 import Lenis from "lenis"
 import { motion } from "motion/react"
+import { BackgroundBeams } from "../components/ui/background-beams"
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
 
@@ -161,7 +162,8 @@ export default function Clubs() {
     <div ref={containerRef} className="clubs-container">
       {/* Hero Section */}
       <section className="h-screen flex items-center justify-center bg-black text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-black to-neutral-800"></div>
+        <BackgroundBeams>
+        <div className="absolute inset-0 "></div>
         <div className="relative z-10 text-center">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
@@ -180,6 +182,7 @@ export default function Clubs() {
             Discover communities of passionate learners and innovators
           </motion.p>
         </div>
+        </BackgroundBeams>
       </section>
 
       {/* Club Sections */}
