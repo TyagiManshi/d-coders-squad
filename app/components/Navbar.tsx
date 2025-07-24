@@ -10,7 +10,7 @@ const Navbar = () => {
   const closeMenu = () => setIsMenuOpen(false);
   return (
     <>
-      <nav className="w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50 transition-all duration-500 ease-in-out">
+      <nav className="pt-6 md:pt-10 w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50 transition-all duration-500 ease-in-out">
         <a href="/">
         <Image
           src={assets.logo_dark_nobg}
