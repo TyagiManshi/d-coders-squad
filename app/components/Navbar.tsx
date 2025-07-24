@@ -1,38 +1,105 @@
-'use client'
+"use client";
 import Image from "next/image";
+import gsap from "gsap";
 import { assets } from "@/assets/assets";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { useGSAP } from "@gsap/react";
+import SplitType from "split-type";
+
+gsap.registerPlugin(useGSAP);
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const openMenu = () => setIsMenuOpen(true);
   const closeMenu = () => setIsMenuOpen(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
+
+  /* ---  GSAP character split  --- */
+  useGSAP(
+    () => {
+      if (!containerRef.current || !logoRef.current) return;
+
+      // Animate logo
+      gsap.fromTo(
+        logoRef.current,
+        {
+          opacity: 0,
+          filter: "blur(20px)",
+        },
+        {
+          opacity: 1,
+          filter: "blur(0px)",
+          duration: 1.2,
+          ease: "power3.inOut",
+          delay: 0.5,
+        }
+      );
+
+      // Animate nav links
+      const links = containerRef.current.querySelectorAll("ul li a");
+
+      links.forEach((link) => {
+        const split = new SplitType(link as HTMLElement, { types: "chars" });
+
+        // Manually reveal the parent <a> now that chars are wrapped
+        (link as HTMLElement).style.visibility = "visible";
+
+        // Animate characters
+        gsap.from(split.chars, {
+          yPercent: 100,
+          autoAlpha: 0,
+          duration: 1,
+          ease: "power4.inOut",
+          stagger: 0.03,
+          delay: 0.5,
+        });
+      });
+    },
+    { scope: containerRef }
+  );
+
   return (
     <>
-      <nav className="pt-6 md:pt-10 w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50 transition-all duration-500 ease-in-out">
+      <nav
+        ref={containerRef}
+        className="navb pt-6 md:pt-10 w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50 transition-all duration-500 ease-in-out"
+      >
         <a href="/">
-        <Image
-          src={assets.logo_dark_nobg}
-          alt="Logo"
-          className="w-12 h-auto cursor-pointer"
-        />
-      </a>
+          <div ref={logoRef} className="logo-container">
+            <Image
+              src={assets.logo_dark_nobg}
+              alt="Logo"
+              className="w-12 h-auto cursor-pointer"
+            />
+          </div>
+        </a>
 
-          <ul className="hidden md:flex items-center gap-6 lg:gap-8 ml-auto font-Ovo transition-all duration-500 ease-in-out">
+        <ul className="hidden md:flex items-center gap-6 lg:gap-8 ml-auto font-Ovo transition-all duration-500 ease-in-out">
           <li>
-            <a className="font-Ovo hover:text-gray-600 transition-colors duration-300" href="/clubs">
+            <a
+              className="font-Ovo hover:text-neutral-400 transition-colors duration-300 clip-link"
+              href="/clubs"
+            >
               C L U B S
             </a>
           </li>
           <li>
-            <a className="font-Ovo hover:text-gray-600 transition-colors duration-300" href="/about">
-                A B O U T
+            <a
+              className="font-Ovo hover:text-neutral-400 transition-colors duration-300 clip-link"
+              href="/about"
+            >
+              A B O U T
             </a>
           </li>
           <li>
-            <a className="font-Ovo hover:text-gray-600 transition-colors duration-300" href="/contact">
-                C O N T A C T
+            <a
+              className="font-Ovo hover:text-neutral-400 transition-colors duration-300 clip-link"
+              href="/contact"
+            >
+              C O N T A C T
             </a>
           </li>
         </ul>
@@ -42,11 +109,7 @@ const Navbar = () => {
             className="block md:hidden ml-3 transition-transform duration-200 hover:scale-110"
             onClick={openMenu}
           >
-            <Image
-              src={assets.menu} 
-              alt=""
-              className="w-6"
-            />
+            <Image src={assets.menu} alt="" className="w-6" />
           </button>
         </div>
 
@@ -101,4 +164,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar
+export default Navbar;

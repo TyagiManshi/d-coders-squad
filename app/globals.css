@@ -45,7 +45,34 @@ body {
   color: var(--foreground);
 }
 
+.home h1 {
+  visibility: hidden;
+}
+
 .home h1 .char {
+    display: inline-block;
   position: relative;
   will-change: transform;
+}
+
+.navb li a {
+  visibility: hidden;
+}
+
+.navb li .char {
+  position: relative;
+  will-change: transform;
+  display: inline-block;
+}
+
+.clip-link {
+  display: inline-block;
+  clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
+}
+
+.navb .logo-container {
+  /* Match GSAP starting state: opacity: 0, blur(20px) */
+  opacity: 0;
+  filter: blur(20px);
 }

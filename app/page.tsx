@@ -14,21 +14,24 @@ export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   /* ---  GSAP character split  --- */
+
   useGSAP(
     () => {
       if (!containerRef.current) return;
 
-      const hero = new SplitType(
-        containerRef.current.querySelector("h1") as HTMLElement,
-        { types: "chars" }
-      );
+      const h1 = containerRef.current.querySelector("h1") as HTMLElement;
+
+      const hero = new SplitType(h1, { types: "chars" });
+
+      // Show h1 after splitting is done
+      h1.style.visibility = "visible";
 
       gsap.from(hero.chars, {
         yPercent: 100,
-        opacity: 0,
+        autoAlpha: 0,
         stagger: 0.1,
         duration: 1,
-        ease: "power4.out",
+        ease: "power4.inOut",
       });
     },
     { scope: containerRef }
@@ -60,7 +63,7 @@ export default function Home() {
         ref={containerRef}
         className="home w-screen h-svh flex flex-col justify-center items-center text-center"
         style={{
-          clipPath: "polygon(0 0, 100% 0, 100% 85%, 0% 100%)",
+          clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)",
         }}
       >
         <h1
