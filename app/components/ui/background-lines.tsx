@@ -17,7 +17,7 @@ export const BackgroundLines = ({
   return (
     <div
       className={cn(
-        "min-h-[20rem] md:min-h-screen w-full bg-white dark:bg-black",
+        "min-h-[20rem] md:min-h-screen w-full bg-white dark:bg-gradient-to-br from-neutral-900 via-black to-neutral-800",
         className
       )}
     >
