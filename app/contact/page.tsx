@@ -10,64 +10,9 @@ import SplitType from "split-type"
 import Lenis from "lenis"
 import { motion } from "motion/react"
 import { BackgroundLines } from "../components/ui/background-lines"
-import { BackgroundBeams } from "../components/ui/background-beams"
 import { CardSpotlight } from "../components/ui/card-spotlight"
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
-
-const contactInfo = [
-  {
-    title: "Email",
-    value: "dcoders@coer.edu.in",
-    icon: "📧",
-    description: "Send us your queries anytime",
-  },
-  {
-    title: "Phone",
-    value: "+91 98765 43210",
-    icon: "📱",
-    description: "Call us during office hours",
-  },
-  {
-    title: "Location",
-    value: "COER University, Roorkee",
-    icon: "📍",
-    description: "CSE Department, Block A",
-  },
-  {
-    title: "Office Hours",
-    value: "Mon - Fri, 9:00 AM - 5:00 PM",
-    icon: "🕒",
-    description: "Available for meetings",
-  },
-]
-
-const socialLinks = [
-  {
-    name: "LinkedIn",
-    url: "#",
-    icon: "💼",
-    color: "from-blue-600 to-blue-700",
-  },
-  {
-    name: "GitHub",
-    url: "#",
-    icon: "💻",
-    color: "from-gray-700 to-gray-900",
-  },
-  {
-    name: "Instagram",
-    url: "#",
-    icon: "📸",
-    color: "from-pink-500 to-purple-600",
-  },
-  {
-    name: "Discord",
-    url: "#",
-    icon: "🎮",
-    color: "from-indigo-500 to-purple-600",
-  },
-]
 
 const faqs = [
   {
@@ -92,9 +37,16 @@ const faqs = [
   },
 ]
 
+interface FormData {
+  name: string
+  email: string
+  subject: string
+  message: string
+}
+
 export default function Contact() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     subject: "",
@@ -113,6 +65,7 @@ export default function Contact() {
       lenis.raf(time)
       requestAnimationFrame(raf)
     }
+
     requestAnimationFrame(raf)
 
     return () => lenis.destroy()
@@ -123,12 +76,14 @@ export default function Contact() {
     () => {
       if (!containerRef.current) return
 
+      const splitInstances: SplitType[] = []
+
       // Hero title animation
       const heroTitle = containerRef.current.querySelector(".hero-title") as HTMLElement
       if (heroTitle) {
         const splitTitle = new SplitType(heroTitle, { types: "chars" })
+        splitInstances.push(splitTitle)
         heroTitle.style.visibility = "visible"
-
         gsap.from(splitTitle.chars, {
           yPercent: 100,
           autoAlpha: 0,
@@ -147,8 +102,8 @@ export default function Contact() {
 
         if (title) {
           const splitTitle = new SplitType(title, { types: "chars" })
+          splitInstances.push(splitTitle)
           title.style.visibility = "visible"
-
           gsap.set(splitTitle.chars, { yPercent: 100, opacity: 0 })
 
           ScrollTrigger.create({
@@ -168,7 +123,6 @@ export default function Contact() {
 
         if (content) {
           gsap.set(content, { y: 60, opacity: 0 })
-
           ScrollTrigger.create({
             trigger: section,
             start: "top 70%",
@@ -189,7 +143,6 @@ export default function Contact() {
       const contactCards = containerRef.current.querySelectorAll(".contact-card")
       contactCards.forEach((card, index) => {
         gsap.set(card, { y: 40, opacity: 0 })
-
         ScrollTrigger.create({
           trigger: card,
           start: "top 80%",
@@ -207,6 +160,7 @@ export default function Contact() {
 
       return () => {
         ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+        splitInstances.forEach((instance) => instance.revert())
       }
     },
     { scope: containerRef },
@@ -226,10 +180,8 @@ export default function Contact() {
     // Simulate form submission
     await new Promise((resolve) => setTimeout(resolve, 2000))
 
-    console.log("Form submitted:", formData)
     setIsSubmitting(false)
     setFormData({ name: "", email: "", subject: "", message: "" })
-
     // You can add actual form submission logic here
   }
 
@@ -251,7 +203,7 @@ export default function Contact() {
               transition={{ delay: 1.2, duration: 0.8, ease: "easeOut" }}
               className="text-xl md:text-2xl text-neutral-600 dark:text-neutral-400 max-w-4xl mx-auto leading-relaxed"
             >
-              Ready to join our community? Have questions? We'd love to hear from you!
+              Ready to join our community? Have questions? We&apos;d love to hear from you!
             </motion.p>
           </div>
         </BackgroundLines>
@@ -271,21 +223,24 @@ export default function Contact() {
                   className="section-title text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white leading-tight"
                   style={{ visibility: "hidden" }}
                 >
-                  Let's Start a Conversation
+                  Let&apos;s Start a Conversation
                 </h2>
                 <p className="text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed">
-                  Whether you're interested in joining our community, have project ideas, or just want to learn more
-                  about what we do, we're here to help.
+                  Whether you&apos;re interested in joining our community, have project ideas, or just want to learn
+                  more about what we do, we&apos;re here to help.
                 </p>
               </div>
-
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2"
+                    >
                       Name *
                     </label>
                     <input
+                      id="name"
                       type="text"
                       name="name"
                       value={formData.name}
@@ -296,10 +251,14 @@ export default function Contact() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2"
+                    >
                       Email *
                     </label>
                     <input
+                      id="email"
                       type="email"
                       name="email"
                       value={formData.email}
@@ -310,12 +269,15 @@ export default function Contact() {
                     />
                   </div>
                 </div>
-
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                  <label
+                    htmlFor="subject"
+                    className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2"
+                  >
                     Subject *
                   </label>
                   <input
+                    id="subject"
                     type="text"
                     name="subject"
                     value={formData.subject}
@@ -325,12 +287,15 @@ export default function Contact() {
                     placeholder="What's this about?"
                   />
                 </div>
-
                 <div>
-                  <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2"
+                  >
                     Message *
                   </label>
                   <textarea
+                    id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
@@ -340,7 +305,6 @@ export default function Contact() {
                     placeholder="Tell us more about your inquiry..."
                   />
                 </div>
-
                 <button
                   type="submit"
                   disabled={isSubmitting}
@@ -357,7 +321,9 @@ export default function Contact() {
                 <div className="relative z-20 h-full flex flex-col justify-between p-8">
                   <div className="space-y-6">
                     <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">
-                      <span className="text-2xl">💬</span>
+                      <span className="text-2xl" role="img" aria-label="chat">
+                        💬
+                      </span>
                     </div>
                     <div>
                       <h3 className="text-white text-2xl font-bold mb-2">Quick Response</h3>
@@ -366,7 +332,6 @@ export default function Contact() {
                       </p>
                     </div>
                   </div>
-
                   <div className="space-y-4">
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
@@ -388,35 +353,6 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Contact Information Section */}
-      <section className="py-20 bg-gray-50 dark:bg-neutral-800">
-        <div className="container mx-auto px-6 lg:px-12">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-4">
-              Other Ways to Reach Us
-            </h2>
-            <p className="text-xl text-neutral-600 dark:text-neutral-300">Choose the method that works best for you</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {contactInfo.map((info, index) => (
-              <motion.div
-                key={info.title}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="contact-card text-center p-6 bg-white dark:bg-neutral-700 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                <div className="text-4xl mb-4">{info.icon}</div>
-                <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-2">{info.title}</h3>
-                <p className="text-lg font-medium text-blue-600 dark:text-blue-400 mb-2">{info.value}</p>
-                <p className="text-sm text-neutral-600 dark:text-neutral-300">{info.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* FAQ Section */}
       <section className="py-20 bg-white dark:bg-neutral-900">
         <div className="container mx-auto px-6 lg:px-12">
@@ -426,7 +362,6 @@ export default function Contact() {
             </h2>
             <p className="text-xl text-neutral-600 dark:text-neutral-300">Quick answers to common questions</p>
           </div>
-
           <div className="max-w-4xl mx-auto space-y-6">
             {faqs.map((faq, index) => (
               <motion.div
@@ -469,10 +404,16 @@ export default function Contact() {
             transition={{ duration: 1, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <button className="px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-colors duration-300">
+            <button
+              className="px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-colors duration-300"
+              aria-label="Join D-Coders Squad"
+            >
               Join D-Coders Squad
             </button>
-            <button className="px-8 py-4 border border-white text-white font-semibold rounded-full hover:bg-white hover:text-black transition-all duration-300">
+            <button
+              className="px-8 py-4 border border-white text-white font-semibold rounded-full hover:bg-white hover:text-black transition-all duration-300"
+              aria-label="Schedule a meeting"
+            >
               Schedule a Meeting
             </button>
           </motion.div>

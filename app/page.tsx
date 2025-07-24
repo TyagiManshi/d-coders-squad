@@ -1,30 +1,31 @@
-"use client";
-import { useRef, useEffect } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import SplitType from "split-type";
-import Lenis from "lenis";
-import { BackgroundLines } from "./components/ui/background-lines";
-import { motion } from "motion/react";
-import { FlipWords } from "./components/ui/flip-words";
+"use client"
 
-gsap.registerPlugin(useGSAP);
+import { useRef, useEffect } from "react"
+import gsap from "gsap"
+import { useGSAP } from "@gsap/react"
+import SplitType from "split-type"
+import Lenis from "lenis"
+import { BackgroundLines } from "./components/ui/background-lines"
+import { motion } from "motion/react"
+import { FlipWords } from "./components/ui/flip-words"
+
+gsap.registerPlugin(useGSAP)
 
 export default function Home() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null)
 
   /* ---  GSAP character split  --- */
-
   useGSAP(
     () => {
-      if (!containerRef.current) return;
+      if (!containerRef.current) return
 
-      const h1 = containerRef.current.querySelector("h1") as HTMLElement;
+      const h1 = containerRef.current.querySelector("h1") as HTMLElement
+      if (!h1) return
 
-      const hero = new SplitType(h1, { types: "chars" });
+      const hero = new SplitType(h1, { types: "chars" })
 
       // Show h1 after splitting is done
-      h1.style.visibility = "visible";
+      h1.style.visibility = "visible"
 
       gsap.from(hero.chars, {
         yPercent: 100,
@@ -32,30 +33,33 @@ export default function Home() {
         stagger: 0.1,
         duration: 1,
         ease: "power4.inOut",
-      });
+      })
+
+      // Cleanup function
+      return () => {
+        hero.revert()
+      }
     },
-    { scope: containerRef }
-  );
+    { scope: containerRef },
+  )
 
   /* ---  Lenis smooth‑scroll  --- */
   useEffect(() => {
-    const lenis = new Lenis({});
+    const lenis = new Lenis({})
 
     const raf = (time: number) => {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    };
-    requestAnimationFrame(raf);
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
 
-    return () => lenis.destroy(); // 🚿 clean‑up
-  }, []);
+    requestAnimationFrame(raf)
 
-  const words = [
-    "Competitve Coding",
-    "Machine Learning",
-    "Web Development",
-    "Graphic Designing",
-  ];
+    return () => {
+      lenis.destroy()
+    }
+  }, [])
+
+  const words = ["Competitive Coding", "Machine Learning", "Web Development", "Graphic Designing"]
 
   return (
     <BackgroundLines className="flex items-center justify-center w-full flex-col px-4">
@@ -66,17 +70,10 @@ export default function Home() {
           clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)",
         }}
       >
-        <h1
-          className="
-  text-6xl md:text-8xl font-bold lg:text-7xl xl:text-8xl 
-  font-bold tracking-tight leading-tight
-  text-center bg-gradient-to-b from-neutral-900 to-neutral-700 dark:from-neutral-600 dark:to-white
-  text-transparent bg-clip-text"
-        >
+        <h1 className="text-6xl md:text-8xl lg:text-7xl xl:text-8xl font-bold tracking-tight leading-tight text-center bg-gradient-to-b from-neutral-900 to-neutral-700 dark:from-neutral-600 dark:to-white text-transparent bg-clip-text">
           D<span className="font-space-grotesk ml-2">Coders</span>
           <span className="ml-2">Squad</span>
         </h1>
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -87,5 +84,5 @@ export default function Home() {
         </motion.div>
       </div>
     </BackgroundLines>
-  );
+  )
 }

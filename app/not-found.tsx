@@ -54,7 +54,6 @@ export default function NotFound() {
       if (errorText) {
         const splitError = new SplitType(errorText, { types: "chars" })
         errorText.style.visibility = "visible"
-
         gsap.from(splitError.chars, {
           yPercent: 100,
           autoAlpha: 0,
@@ -63,6 +62,10 @@ export default function NotFound() {
           ease: "power4.inOut",
           delay: 0.5,
         })
+
+        return () => {
+          splitError.revert()
+        }
       }
     },
     { scope: containerRef, dependencies: [isClient] },
@@ -113,7 +116,9 @@ export default function NotFound() {
             className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl p-6 max-w-2xl mx-auto border border-blue-200/50 dark:border-blue-700/50 mb-12"
           >
             <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-4 text-center">Easter Egg!</h3>
-            <div className="text-4xl mb-4 text-center">🎉</div>
+            <div className="text-4xl mb-4 text-center" role="img" aria-label="celebration">
+              🎉
+            </div>
             <p className="text-neutral-600 dark:text-neutral-300 text-center">{easterEgg}</p>
           </motion.div>
         )}
@@ -125,6 +130,7 @@ export default function NotFound() {
           transition={{ delay: 2.2, duration: 0.6, ease: "easeOut" }}
           onClick={() => router.push("/")}
           className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105"
+          aria-label="Go back to home page"
         >
           🏠 Take me home
         </motion.button>

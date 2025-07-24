@@ -10,6 +10,7 @@ import { motion } from "motion/react"
 import { BackgroundLines } from "../components/ui/background-lines"
 import { BackgroundBeams } from "../components/ui/background-beams"
 import { CardSpotlight } from "../components/ui/card-spotlight"
+import Image from "next/image"
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
 
@@ -72,6 +73,7 @@ export default function About() {
       lenis.raf(time)
       requestAnimationFrame(raf)
     }
+
     requestAnimationFrame(raf)
 
     return () => lenis.destroy()
@@ -82,12 +84,14 @@ export default function About() {
     () => {
       if (!containerRef.current) return
 
+      const splitInstances: SplitType[] = []
+
       // Hero title animation
       const heroTitle = containerRef.current.querySelector(".hero-title") as HTMLElement
       if (heroTitle) {
         const splitTitle = new SplitType(heroTitle, { types: "chars" })
+        splitInstances.push(splitTitle)
         heroTitle.style.visibility = "visible"
-
         gsap.from(splitTitle.chars, {
           yPercent: 100,
           autoAlpha: 0,
@@ -106,8 +110,8 @@ export default function About() {
 
         if (title) {
           const splitTitle = new SplitType(title, { types: "chars" })
+          splitInstances.push(splitTitle)
           title.style.visibility = "visible"
-
           gsap.set(splitTitle.chars, { yPercent: 100, opacity: 0 })
 
           ScrollTrigger.create({
@@ -127,7 +131,6 @@ export default function About() {
 
         if (content) {
           gsap.set(content, { y: 60, opacity: 0 })
-
           ScrollTrigger.create({
             trigger: section,
             start: "top 70%",
@@ -163,6 +166,7 @@ export default function About() {
 
       return () => {
         ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+        splitInstances.forEach((instance) => instance.revert())
       }
     },
     { scope: containerRef },
@@ -224,18 +228,18 @@ export default function About() {
                 </p>
               </div>
             </div>
-
             <div className="relative">
               <CardSpotlight className="h-96 lg:h-[500px] w-full">
                 <div className="relative z-20 h-full flex flex-col justify-between p-8">
                   <div className="space-y-4">
                     <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">
-                      <span className="text-2xl">🎓</span>
+                      <span className="text-2xl" role="img" aria-label="graduation cap">
+                        🎓
+                      </span>
                     </div>
                     <h3 className="text-white text-2xl font-bold">COER University</h3>
                     <p className="text-white/80 text-sm">Computer Science & Engineering Department</p>
                   </div>
-
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
@@ -269,7 +273,6 @@ export default function About() {
                 Guided by experienced faculty and driven by passionate students
               </p>
             </div>
-
             <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
               {leadership.map((leader, index) => (
                 <motion.div
@@ -280,9 +283,11 @@ export default function About() {
                   className="text-center space-y-6"
                 >
                   <div className="relative mx-auto w-48 h-48 rounded-full overflow-hidden border-4 border-white/20">
-                    <img
+                    <Image
                       src={leader.image || "/placeholder.svg"}
-                      alt={leader.name}
+                      alt={`Portrait of ${leader.name}`}
+                      width={192}
+                      height={192}
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -305,7 +310,6 @@ export default function About() {
             <h2 className="text-4xl md:text-5xl font-bold mb-4">Our Impact</h2>
             <p className="text-xl text-blue-100">Numbers that tell our story</p>
           </div>
-
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <motion.div
@@ -337,7 +341,6 @@ export default function About() {
               The principles that guide everything we do
             </p>
           </div>
-
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, index) => (
               <motion.div
@@ -347,7 +350,9 @@ export default function About() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="text-center space-y-4 p-6 rounded-2xl bg-white dark:bg-neutral-700 shadow-lg hover:shadow-xl transition-shadow duration-300"
               >
-                <div className="text-4xl mb-4">{value.icon}</div>
+                <div className="text-4xl mb-4" role="img" aria-label={value.title}>
+                  {value.icon}
+                </div>
                 <h3 className="text-xl font-bold text-neutral-900 dark:text-white">{value.title}</h3>
                 <p className="text-neutral-600 dark:text-neutral-300 leading-relaxed">{value.description}</p>
               </motion.div>
@@ -373,7 +378,7 @@ export default function About() {
             transition={{ duration: 1, delay: 0.2 }}
             className="text-xl text-gray-300 max-w-2xl mx-auto"
           >
-            Be part of a community that's shaping the future of technology, one project at a time
+            Be part of a community that&apos;s shaping the future of technology, one project at a time
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -381,12 +386,18 @@ export default function About() {
             transition={{ duration: 1, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <button className="px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-colors duration-300">
+            <button
+              className="px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-colors duration-300"
+              aria-label="Join D-Coders Squad"
+            >
               Join D-Coders Squad
             </button>
-            <a className="px-8 py-4 border border-white text-white font-semibold rounded-full hover:bg-white hover:text-black transition-all duration-300" href="/clubs">
+            <button
+              className="px-8 py-4 border border-white text-white font-semibold rounded-full hover:bg-white hover:text-black transition-all duration-300"
+              aria-label="View our clubs"
+            >
               View Our Clubs
-            </a>
+            </button>
           </motion.div>
         </div>
       </section>

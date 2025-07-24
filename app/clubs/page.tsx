@@ -1,16 +1,16 @@
-"use client";
+"use client"
 
-import { useRef, useEffect } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import SplitType from "split-type";
-import Lenis from "lenis";
-import { motion } from "motion/react";
-import { BackgroundBeams } from "../components/ui/background-beams";
-import { CardSpotlight } from "../components/ui/card-spotlight";
+import { useRef, useEffect } from "react"
+import gsap from "gsap"
+import { useGSAP } from "@gsap/react"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import SplitType from "split-type"
+import Lenis from "lenis"
+import { motion } from "motion/react"
+import { BackgroundBeams } from "../components/ui/background-beams"
+import { CardSpotlight } from "../components/ui/card-spotlight"
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+gsap.registerPlugin(useGSAP, ScrollTrigger)
 
 const clubsData = [
   {
@@ -27,7 +27,7 @@ const clubsData = [
   {
     id: "machine-learning",
     title: "Machine Learning",
-    leader: "Mohmmad Shaban, ...",
+    leader: "Mohammad Shaban, ...",
     members: 20,
     description:
       "Explore the frontiers of artificial intelligence and data science. We dive deep into neural networks, deep learning, and AI applications, building intelligent systems that shape the future of technology.",
@@ -38,7 +38,7 @@ const clubsData = [
   {
     id: "web-development",
     title: "Web Development",
-    leader: "Naam bhul gaya mai inke",
+    leader: "Web Development Team",
     members: 20,
     description:
       "Craft modern, responsive web experiences using cutting-edge technologies. From React and Next.js to backend systems, we build full-stack applications that deliver exceptional user experiences.",
@@ -49,7 +49,7 @@ const clubsData = [
   {
     id: "graphic-designing",
     title: "Graphic Designing",
-    leader: "Inke bhi forgot",
+    leader: "Design Team",
     members: 25,
     description:
       "Transform ideas into stunning visual narratives. Our design club focuses on UI/UX, branding, and digital art, creating compelling visuals that communicate effectively and inspire audiences.",
@@ -57,46 +57,48 @@ const clubsData = [
     bgColor: "bg-stone-100",
     textColor: "text-stone-900",
   },
-];
+]
 
 export default function Clubs() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null)
 
   /* --- Lenis smooth scroll --- */
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    });
+    })
 
     const raf = (time: number) => {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    };
-    requestAnimationFrame(raf);
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
 
-    return () => lenis.destroy();
-  }, []);
+    requestAnimationFrame(raf)
+
+    return () => lenis.destroy()
+  }, [])
 
   /* --- GSAP Animations --- */
   useGSAP(
     () => {
-      if (!containerRef.current) return;
+      if (!containerRef.current) return
 
       // Animate club sections on scroll
-      const sections = containerRef.current.querySelectorAll(".club-section");
+      const sections = containerRef.current.querySelectorAll(".club-section")
+      const splitInstances: SplitType[] = []
 
-      sections.forEach((section, index) => {
-        const title = section.querySelector(".club-title") as HTMLElement;
-        const content = section.querySelector(".club-content");
-        const visual = section.querySelector(".club-visual");
+      sections.forEach((section) => {
+        const title = section.querySelector(".club-title") as HTMLElement
+        const content = section.querySelector(".club-content")
+        const visual = section.querySelector(".club-visual")
 
         // Split title text
         if (title) {
-          const splitTitle = new SplitType(title, { types: "chars" });
-          title.style.visibility = "visible";
-
-          gsap.set(splitTitle.chars, { yPercent: 100, opacity: 0 });
+          const splitTitle = new SplitType(title, { types: "chars" })
+          splitInstances.push(splitTitle)
+          title.style.visibility = "visible"
+          gsap.set(splitTitle.chars, { yPercent: 100, opacity: 0 })
 
           ScrollTrigger.create({
             trigger: section,
@@ -108,15 +110,14 @@ export default function Clubs() {
                 duration: 0.8,
                 stagger: 0.02,
                 ease: "power3.out",
-              });
+              })
             },
-          });
+          })
         }
 
         // Animate content
         if (content) {
-          gsap.set(content, { y: 60, opacity: 0 });
-
+          gsap.set(content, { y: 60, opacity: 0 })
           ScrollTrigger.create({
             trigger: section,
             start: "top 70%",
@@ -127,15 +128,14 @@ export default function Clubs() {
                 duration: 1,
                 delay: 0.3,
                 ease: "power3.out",
-              });
+              })
             },
-          });
+          })
         }
 
         // Animate visual element
         if (visual) {
-          gsap.set(visual, { scale: 0.8, opacity: 0 });
-
+          gsap.set(visual, { scale: 0.8, opacity: 0 })
           ScrollTrigger.create({
             trigger: section,
             start: "top 60%",
@@ -146,27 +146,19 @@ export default function Clubs() {
                 duration: 1.2,
                 delay: 0.2,
                 ease: "power3.out",
-              });
+              })
             },
-          });
+          })
         }
-      });
+      })
 
       return () => {
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-      };
+        ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+        splitInstances.forEach((instance) => instance.revert())
+      }
     },
-    { scope: containerRef }
-  );
-
-  const Step = ({ title }: { title: string }) => {
-    return (
-      <li className="flex gap-2 items-start">
-        <CheckIcon />
-        <p className="text-white">{title}</p>
-      </li>
-    );
-  };
+    { scope: containerRef },
+  )
 
   const CheckIcon = () => {
     return (
@@ -177,6 +169,7 @@ export default function Clubs() {
         viewBox="0 0 24 24"
         fill="currentColor"
         className="h-4 w-4 text-blue-500 mt-1 shrink-0"
+        aria-hidden="true"
       >
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
         <path
@@ -185,15 +178,15 @@ export default function Clubs() {
           strokeWidth="0"
         />
       </svg>
-    );
-  };
+    )
+  }
 
   return (
     <div ref={containerRef} className="clubs-container">
       {/* Hero Section */}
       <section className="h-screen flex items-center justify-center bg-black text-white relative overflow-hidden">
         <BackgroundBeams>
-          <div className="absolute inset-0 "></div>
+          <div className="absolute inset-0"></div>
           <div className="relative z-10 text-center">
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
@@ -224,16 +217,10 @@ export default function Clubs() {
           <div className="container mx-auto px-6 lg:px-12">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               {/* Content Side */}
-              <div
-                className={`club-content ${
-                  index % 2 === 1 ? "lg:order-2" : ""
-                }`}
-              >
+              <div className={`club-content ${index % 2 === 1 ? "lg:order-2" : ""}`}>
                 <div className="space-y-6">
                   <div className="space-y-2">
-                    <p
-                      className={`text-sm uppercase tracking-wider font-medium ${club.textColor} opacity-60`}
-                    >
+                    <p className={`text-sm uppercase tracking-wider font-medium ${club.textColor} opacity-60`}>
                       Club Leader: {club.leader}
                     </p>
                     <h2
@@ -243,41 +230,21 @@ export default function Clubs() {
                       {club.title}
                     </h2>
                   </div>
-
                   <div className="space-y-4">
-                    <p
-                      className={`text-lg md:text-xl ${club.textColor} opacity-80 leading-relaxed max-w-lg`}
-                    >
+                    <p className={`text-lg md:text-xl ${club.textColor} opacity-80 leading-relaxed max-w-lg`}>
                       {club.description}
                     </p>
-
                     <div className="flex items-center space-x-8 pt-4">
                       <div>
-                        <p
-                          className={`text-3xl md:text-4xl font-bold ${club.textColor}`}
-                        >
-                          {club.members}
-                        </p>
-                        <p
-                          className={`text-sm ${club.textColor} opacity-60 uppercase tracking-wide`}
-                        >
-                          Active Members
-                        </p>
+                        <p className={`text-3xl md:text-4xl font-bold ${club.textColor}`}>{club.members}</p>
+                        <p className={`text-sm ${club.textColor} opacity-60 uppercase tracking-wide`}>Active Members</p>
                       </div>
-
                       <div className="h-12 w-px bg-current opacity-20"></div>
-
                       <button
-                        className={`
-    px-6 py-3 border
-    ${club.textColor}
-    bg-transparent text-current transition-all duration-300 font-medium
-    ${
-      index % 2 === 1
-        ? "hover:bg-black hover:text-white"
-        : "hover:bg-white hover:text-black"
-    }
-  `}
+                        className={`px-6 py-3 border ${club.textColor} bg-transparent text-current transition-all duration-300 font-medium ${
+                          index % 2 === 1 ? "hover:bg-black hover:text-white" : "hover:bg-white hover:text-black"
+                        }`}
+                        aria-label={`Join ${club.title} club`}
                       >
                         Join Club
                       </button>
@@ -287,9 +254,7 @@ export default function Clubs() {
               </div>
 
               {/* Visual Side */}
-              <div
-                className={`club-visual ${index % 2 === 1 ? "lg:order-1" : ""}`}
-              >
+              <div className={`club-visual ${index % 2 === 1 ? "lg:order-1" : ""}`}>
                 <CardSpotlight className="rounded-2xl overflow-hidden relative h-96 lg:h-[500px]">
                   {/* Decorative Elements */}
                   <div className="absolute top-8 right-8 w-16 h-16 border-2 border-white/20 rounded-full z-10"></div>
@@ -299,9 +264,7 @@ export default function Clubs() {
                   {/* Glassy Content Box */}
                   <div className="absolute bottom-8 left-8 right-8 z-10">
                     <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-                      <h3 className="text-white text-xl font-semibold mb-2">
-                        {club.title}
-                      </h3>
+                      <h3 className="text-white text-xl font-semibold mb-2">{club.title}</h3>
                       <p className="text-white/80 text-sm">
                         Led by {club.leader} • {club.members} members
                       </p>
@@ -331,19 +294,19 @@ export default function Clubs() {
             transition={{ duration: 1, delay: 0.2 }}
             className="text-xl text-gray-300 max-w-2xl mx-auto"
           >
-            Connect with like-minded individuals and start your journey with
-            DCoders Squad
+            Connect with like-minded individuals and start your journey with DCoders Squad
           </motion.p>
           <motion.button
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4 }}
             className="px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-colors duration-300"
+            aria-label="Get started with DCoders Squad"
           >
             Get Started
           </motion.button>
         </div>
       </section>
     </div>
-  );
+  )
 }
