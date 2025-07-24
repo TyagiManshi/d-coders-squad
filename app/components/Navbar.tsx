@@ -5,6 +5,7 @@ import { assets } from "@/assets/assets";
 import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import SplitType from "split-type";
+import { useTransitionRouter } from "next-view-transitions";
 
 gsap.registerPlugin(useGSAP);
 
@@ -16,6 +17,44 @@ const Navbar = () => {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
+
+  const router = useTransitionRouter();
+
+  function slideInOut() {
+    document.documentElement.animate(
+      [
+        {
+          opacity: 1,
+          transform: "translateY(0)"
+        },
+        {
+          opacity: 0.2,
+          transform: "translateY(-35%)"
+        }
+      ], {
+        duration: 1500,
+        easing: "cubic-bezier(0.87, 0, 0.13, 1)",
+        fill: "forwards",
+        pseudoElement: "::view-transition-old(root)",
+      }
+    );
+
+    document.documentElement.animate(
+      [
+        {
+          clipPath: "polygon(0% 100%, !00% 100%, 100% 100%, 0% 100%)",
+        },
+        {
+          clipPath: "polygon(0% 100%, !00% 100%, 100% 0%, 0% 0%)",
+        }
+      ], {
+        duration: 1500,
+        easing: "cubic-bezier(0.87, 0, 0.13, 1)",
+        fill: "forwards",
+        pseudoElement: "::view-transition-old(root)",
+      }
+    );
+  }
 
   /* ---  GSAP character split  --- */
   useGSAP(
@@ -67,7 +106,15 @@ const Navbar = () => {
         ref={containerRef}
         className="navb pt-6 md:pt-10 w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50 transition-all duration-500 ease-in-out"
       >
-        <a href="/">
+        <a
+          onClick={(e) => {
+            e.preventDefault();
+            router.push("/", {
+              onTransitionReady: slideInOut
+            });
+          }} 
+          href="/"
+        >
           <div ref={logoRef} className="logo-container">
             <Image
               src={assets.logo_dark_nobg}
@@ -80,6 +127,12 @@ const Navbar = () => {
         <ul className="hidden md:flex items-center gap-6 lg:gap-8 ml-auto font-Ovo transition-all duration-500 ease-in-out">
           <li>
             <a
+              onClick={(e) => {
+                e.preventDefault();
+                router.push("/clubs", {
+                  onTransitionReady: slideInOut
+                });
+              }} 
               className="font-Ovo hover:text-neutral-400 transition-colors duration-300 clip-link"
               href="/clubs"
             >
@@ -88,6 +141,12 @@ const Navbar = () => {
           </li>
           <li>
             <a
+              onClick={(e) => {
+                e.preventDefault();
+                router.push("/about", {
+                  onTransitionReady: slideInOut
+                });
+              }} 
               className="font-Ovo hover:text-neutral-400 transition-colors duration-300 clip-link"
               href="/about"
             >
@@ -96,6 +155,12 @@ const Navbar = () => {
           </li>
           <li>
             <a
+              onClick={(e) => {
+                e.preventDefault();
+                  router.push("/contact", {
+                    onTransitionReady: slideInOut
+                  });
+                }} 
               className="font-Ovo hover:text-neutral-400 transition-colors duration-300 clip-link"
               href="/contact"
             >
