@@ -5,7 +5,6 @@ import { assets } from "@/assets/assets";
 import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import SplitType from "split-type";
-import { useTransitionRouter } from "next-view-transitions";
 
 gsap.registerPlugin(useGSAP);
 
@@ -17,8 +16,6 @@ const Navbar = () => {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
-
-  const router = useTransitionRouter();
 
   function slideInOut() {
     document.documentElement.animate(
@@ -107,12 +104,6 @@ const Navbar = () => {
         className="navb pt-6 md:pt-10 w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50"
       >
         <a
-          onClick={(e) => {
-            e.preventDefault();
-            router.push("/", {
-              onTransitionReady: slideInOut
-            });
-          }} 
           href="/"
         >
           <div ref={logoRef} className="logo-container">
@@ -127,12 +118,6 @@ const Navbar = () => {
         <ul className="hidden md:flex items-center gap-6 lg:gap-8 ml-auto">
           <li>
             <a
-              onClick={(e) => {
-                e.preventDefault();
-                router.push("/clubs", {
-                  onTransitionReady: slideInOut
-                });
-              }} 
               className="font-Ovo hover:text-neutral-400 transition-colors duration-300 clip-link"
               href="/clubs"
             >
@@ -141,12 +126,6 @@ const Navbar = () => {
           </li>
           <li>
             <a
-              onClick={(e) => {
-                e.preventDefault();
-                router.push("/about", {
-                  onTransitionReady: slideInOut
-                });
-              }} 
               className="font-Ovo hover:text-neutral-400 transition-colors duration-300 clip-link"
               href="/about"
             >
@@ -155,12 +134,6 @@ const Navbar = () => {
           </li>
           <li>
             <a
-              onClick={(e) => {
-                e.preventDefault();
-                  router.push("/contact", {
-                    onTransitionReady: slideInOut
-                  });
-                }} 
               className="font-Ovo hover:text-neutral-400 transition-colors duration-300 clip-link"
               href="/contact"
             >

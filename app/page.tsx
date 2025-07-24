@@ -68,7 +68,7 @@ export default function Home() {
       >
         <h1
           className="
-  text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 
+  text-6xl md:text-8xl font-bold lg:text-7xl xl:text-8xl 
   font-bold tracking-tight leading-tight
   text-center bg-gradient-to-b from-neutral-900 to-neutral-700 dark:from-neutral-600 dark:to-white
   text-transparent bg-clip-text"

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Space_Grotesk, Inter } from "next/font/google";
 import Navbar from "./components/Navbar";
-import { ViewTransitions } from "next-view-transitions";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,7 +27,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ViewTransitions>
       <html lang="en">
         <body
           className={`${spaceGrotesk.className} ${inter.className} antialiased`}
@@ -37,6 +35,5 @@ export default function RootLayout({
           {children}
         </body>
       </html>
-    </ViewTransitions>
   );
 }
