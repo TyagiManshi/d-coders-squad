@@ -268,7 +268,16 @@ export default function Clubs() {
                       <div className="h-12 w-px bg-current opacity-20"></div>
 
                       <button
-                        className={`px-6 py-3 border border-current ${club.textColor} hover:bg-current hover:text-white transition-all duration-300 font-medium`}
+                        className={`
+    px-6 py-3 border
+    ${club.textColor}
+    bg-transparent text-current transition-all duration-300 font-medium
+    ${
+      index % 2 === 1
+        ? "hover:bg-black hover:text-white"
+        : "hover:bg-white hover:text-black"
+    }
+  `}
                       >
                         Join Club
                       </button>
@@ -278,24 +287,26 @@ export default function Clubs() {
               </div>
 
               {/* Visual Side */}
-              <div className={`club-visual ${index % 2 === 1 ? "lg:order-1" : ""}`}>
+              <div
+                className={`club-visual ${index % 2 === 1 ? "lg:order-1" : ""}`}
+              >
                 <CardSpotlight className="rounded-2xl overflow-hidden relative h-96 lg:h-[500px]">
-                    {/* Decorative Elements */}
-                    <div className="absolute top-8 right-8 w-16 h-16 border-2 border-white/20 rounded-full z-10"></div>
-                    <div className="absolute top-1/2 left-8 w-2 h-2 bg-white/30 rounded-full z-10"></div>
-                    <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-white/20 rounded-full z-10"></div>
+                  {/* Decorative Elements */}
+                  <div className="absolute top-8 right-8 w-16 h-16 border-2 border-white/20 rounded-full z-10"></div>
+                  <div className="absolute top-1/2 left-8 w-2 h-2 bg-white/30 rounded-full z-10"></div>
+                  <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-white/20 rounded-full z-10"></div>
 
-                    {/* Glassy Content Box */}
-                    <div className="absolute bottom-8 left-8 right-8 z-10">
+                  {/* Glassy Content Box */}
+                  <div className="absolute bottom-8 left-8 right-8 z-10">
                     <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6">
-                        <h3 className="text-white text-xl font-semibold mb-2">
+                      <h3 className="text-white text-xl font-semibold mb-2">
                         {club.title}
-                        </h3>
-                        <p className="text-white/80 text-sm">
+                      </h3>
+                      <p className="text-white/80 text-sm">
                         Led by {club.leader} • {club.members} members
-                        </p>
+                      </p>
                     </div>
-                    </div>
+                  </div>
                 </CardSpotlight>
               </div>
             </div>
