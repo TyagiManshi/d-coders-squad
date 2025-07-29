@@ -1,27 +1,33 @@
 import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import BlobBackground from "./BlobBackground";
+import codingIcon from "../assets/coding.png";
+import machineLearningIcon from "../assets/machine-learning.png";
+import graphicDesigningIcon from "../assets/graphic-designing.png";
+import researchIcon from "../assets/research.png";
+import webDevIcon from "../assets/web-dev.png";
+import appDevIcon from "../assets/app-dev.png";
 
 const cards1 = [
   {
     icon: "Competitive Coding",
     desc: "Data structures & algorithms",
-    iconUrl: "/src/assets/coding.png", 
+    iconUrl: codingIcon, 
   },
   {
     icon: "Machine Learning",
     desc: "Smart predictive systems",
-    iconUrl: "src/assets/machine-learning.png",
+    iconUrl: machineLearningIcon,
   },
   {
     icon: "Graphic Designing",
     desc: "Creative visual content",
-    iconUrl: "src/assets/graphic-designing.png",
+    iconUrl: graphicDesigningIcon,
   },
   {
     icon: "R & D",
     desc: "Explore new solutions",
-    iconUrl: "src/assets/research.png",
+    iconUrl: researchIcon,
   },
 ];
 
@@ -29,27 +35,27 @@ const cards2 = [
   {
     icon: "Web Development",
     desc: "Modern web applications",
-    iconUrl: "src/assets/web-dev.png",
+    iconUrl: webDevIcon,
   },
   {
     icon: "App Development",
     desc: "Mobile & desktop apps",
-    iconUrl: "src/assets/app-dev.png",
+    iconUrl: appDevIcon,
   },
   {
     icon: "Competitive Coding",
     desc: "Data structures & algorithms",
-    iconUrl: "src/assets/coding.png",
+    iconUrl: codingIcon,
   },
   {
     icon: "Machine Learning",
     desc: "Smart predictive systems",
-    iconUrl: "src/assets/machine-learning.png",
+    iconUrl: machineLearningIcon,
   },
   {
     icon: "R & D",
     desc: "Explore new solutions",
-    iconUrl: "src/assets/research.png",
+    iconUrl: researchIcon,
   },
 ];
 

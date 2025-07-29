@@ -1,6 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import BlobBackground from "../components/BlobBackground";
+import BlockImage from "../assets/block-image.png";
+import Astro from "../assets/astro.png";
 
 const LandingPage = () => {
   return (
@@ -30,7 +32,7 @@ const LandingPage = () => {
                     className="mr-[1vw] ml-[1vw] w-[8vw] mt-[0.8vh]"
                   >
                     <img
-                      src="src\assets\block-image.png"
+                      src={BlockImage}
                       className="rounded-md shadow-2xl"
                     />
                   </motion.div>
@@ -78,7 +80,7 @@ const LandingPage = () => {
   className="float-right relative z-10"
 >
   <img
-    src="src\\assets\\astro.png"
+    src={Astro}
     width="330px"
     className="mr-15 mt-32 rounded-xl"
   />
