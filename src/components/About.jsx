@@ -5,6 +5,8 @@ import React, { useRef } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
+import BannerImage from "../assets/d-coders-banner-2.png";
+
 const About = () => {
   const buttonRef = useRef(null);
 
@@ -47,7 +49,7 @@ const About = () => {
         <div className="h-dvh w-full relative overflow-hidden" id="clip">
           <div className="mask-clip-path about-image absolute top-1/2 left-1/2 w-[50vw] h-[50vh] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-3xl">
             <img
-              src="src/assets/d-coders-banner-2.png"
+              src={BannerImage}
               alt="bg-image"
               className="w-full h-full object-cover"
             />
