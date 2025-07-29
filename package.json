@@ -1,7 +1,7 @@
 {
   "name": "d-coders-squad",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
-    "@react-spring/web": "^10.0.1",
     "@tailwindcss/vite": "^4.1.11",
     "framer-motion": "^12.23.9",
     "gsap": "^3.13.0",
